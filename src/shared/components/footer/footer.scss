@@ -1,0 +1,39 @@
+.footer {
+  font-family: Roboto;
+  background-color: #111;
+  width: 100%;
+  padding: 24px;
+  color: #fff;
+}
+
+.contact-info {
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+
+  &.link-icon {
+    font-size: 24px;
+
+    > *:not(:first-child) {
+      margin-left: 16px;
+    }
+  }
+
+  > *:not(:first-child) {
+    margin-left: 4px;
+  }
+
+  > .align-middle {
+    vertical-align: middle;
+  }
+}
+
+.copyright-info {
+  align-self: center;
+  text-align: center;
+  width: 100%;
+
+  > *:not(:last-child) {
+    margin-bottom: 12px;
+  }
+}

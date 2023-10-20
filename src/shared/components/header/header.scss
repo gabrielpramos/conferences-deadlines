@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  width: 100%;
+  background-color: #fff;
+  padding: 24px 32px;
+
+  > h2 {
+    align-self: center;
+    padding: 0px 32px;
+  }
+}
