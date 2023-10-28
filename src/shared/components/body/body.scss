@@ -1,0 +1,58 @@
+.conference-list {
+  --padding-left-articles: 16px;
+
+  padding: 24px 12px;
+
+  .card {
+    background: #fff;
+    display: flex;
+    flex-flow: row;
+    padding: 24px;
+    min-height: 120px;
+
+    .card-detail {
+      display: flex;
+      min-width: 50%;
+      flex-flow: column;
+
+      .description {
+        padding: 8px 0px;
+      }
+
+      .category-conference-area {
+        color: var(--gray-bold);
+        font-size: small;
+        font-weight: bold;
+        padding-top: 8px;
+      }
+    }
+  }
+
+  .date-and-place-details {
+    padding-left: var(--padding-left-articles);
+    align-self: center;
+    min-width: 20%;
+    text-align: end;
+
+    > p {
+      word-wrap: break-word;
+
+      > a,
+      p {
+        white-space: break-spaces;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
+
+      > .icon {
+        margin-right: 4px;
+        fill: var(--gray-bold);
+      }
+    }
+  }
+
+  .countdown-details {
+  }
+}

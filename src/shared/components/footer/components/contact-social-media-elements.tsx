@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SOCIAL_MEDIA_PATHS } from '../../constants';
+import { SOCIAL_MEDIA_PATHS } from '../../../constants/urls';
 import { BsFacebook, BsTwitter, BsInstagram, BsYoutube } from 'react-icons/bs';
 import texts from '@/shared/constants/texts';
 

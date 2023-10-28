@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { CESAR_SCHOOL_PATH, LOGO_PATH1 } from '../constants';
+import { CESAR_SCHOOL_PATH, LOGO_PATH1 } from '../../constants/urls';
 import texts from '@/shared/constants/texts';
 import './header.scss';
 
