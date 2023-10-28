@@ -9,5 +9,12 @@ const SOCIAL_MEDIA_PATHS = {
   instagram: 'https://www.instagram.com/cesarschool/',
   youtube: 'https://www.youtube.com/cesarschool',
 };
+const GOOGLE_MAPS_URL = 'https://maps.google.com/';
 
-export { LOGO_PATH1, LOGO_PATH2, CESAR_SCHOOL_PATH, SOCIAL_MEDIA_PATHS };
+export {
+  LOGO_PATH1,
+  LOGO_PATH2,
+  CESAR_SCHOOL_PATH,
+  SOCIAL_MEDIA_PATHS,
+  GOOGLE_MAPS_URL,
+};

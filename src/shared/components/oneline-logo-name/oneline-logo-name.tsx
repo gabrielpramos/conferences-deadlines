@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { CESAR_SCHOOL_PATH, LOGO_PATH2 } from '../constants';
+import { CESAR_SCHOOL_PATH, LOGO_PATH2 } from '../../constants/urls';
 import texts from '@/shared/constants/texts';
 
 const OnelineLogoName = () => (
