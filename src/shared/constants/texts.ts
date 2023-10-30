@@ -12,4 +12,6 @@ const texts = {
     },
   },
 };
+
+export const GLOBAL_OBJECT_TO_STRING_SERVER = '[object Object]';
 export default texts;

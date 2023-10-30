@@ -1,5 +1,6 @@
 'use client';
 
+import { GLOBAL_OBJECT_TO_STRING_SERVER } from '@/shared/constants/texts';
 import { intervalToDuration } from 'date-fns';
 import { FC, useEffect, useState } from 'react';
 
@@ -16,7 +17,7 @@ const Countdown: FC<CountdownProps> = ({ endDate }) => {
 
   const treatedInterval = Object.entries(interval).reduce(
     (acc, [key, value]) => {
-      const result = value > 0 ? `${key}: ${value}` : '';
+      const result = value > 0 ? `${value} ${key}` : `${acc ? `1 ${key}` : ''}`;
 
       return `${acc ? `${acc}, ` : ''}${result}`;
     },
@@ -33,7 +34,11 @@ const Countdown: FC<CountdownProps> = ({ endDate }) => {
     return () => clearInterval(intervalId);
   }, [counter]);
 
-  return window ? <p>{treatedInterval}</p> : <></>;
+  return (
+    <p className='countdown-text' suppressHydrationWarning>
+      {treatedInterval}
+    </p>
+  );
 };
 
 export default Countdown;

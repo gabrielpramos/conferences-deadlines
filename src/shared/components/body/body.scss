@@ -10,13 +10,18 @@
     padding: 24px;
     min-height: 120px;
 
+    > *:not(:first-child) {
+      padding-left: var(--padding-left-articles);
+    }
+
     .card-detail {
       display: flex;
-      min-width: 50%;
+      width: 50%;
       flex-flow: column;
 
       .description {
         padding: 8px 0px;
+        font-weight: normal;
       }
 
       .category-conference-area {
@@ -29,7 +34,6 @@
   }
 
   .date-and-place-details {
-    padding-left: var(--padding-left-articles);
     align-self: center;
     min-width: 20%;
     text-align: end;
@@ -37,22 +41,58 @@
     > p {
       word-wrap: break-word;
 
-      > a,
-      p {
+      > a {
         white-space: break-spaces;
+
+        > .icon {
+          &:first-child {
+            margin-right: 4px;
+            fill: var(--gray-bold);
+          }
+
+          &:last-child {
+            margin-left: 4px;
+            color: var(--gray-bold);
+            vertical-align: middle;
+          }
+        }
       }
 
       &:not(:last-child) {
         margin-bottom: 8px;
       }
-
-      > .icon {
-        margin-right: 4px;
-        fill: var(--gray-bold);
-      }
     }
   }
 
   .countdown-details {
+    align-self: end;
+    padding: 0px 12px;
+    min-height: 68px;
+
+    > .overdue-conference {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    > .countdown-text {
+      font-size: 20px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    > .detail {
+      font-weight: bold;
+      padding-top: 8px;
+
+      &.on-target {
+        color: #48bb78;
+      }
+      &.on-target-warning {
+        color: #ed8936;
+      }
+      &.critical-close-to-deadline {
+        color: #f56565;
+      }
+    }
   }
 }
