@@ -33,8 +33,7 @@ const Countdown: FC<CountdownProps> = ({ endDate }) => {
     return () => clearInterval(intervalId);
   }, [counter]);
 
-  return treatedInterval;
+  return window ? <p>{treatedInterval}</p> : <></>;
 };
 
-export const dynamic = 'force-dynamic';
 export default Countdown;

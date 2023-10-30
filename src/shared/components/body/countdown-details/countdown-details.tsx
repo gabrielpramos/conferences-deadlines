@@ -1,8 +1,6 @@
-
 import { ConferenceInfo } from '@/app/models/spreadsheet-model';
 import { FC } from 'react';
 import Countdown from './countdown/countdown';
-import { intervalToDuration } from 'date-fns';
 
 type CountdownDetailsProps = {
   [keys in Uncapitalize<
