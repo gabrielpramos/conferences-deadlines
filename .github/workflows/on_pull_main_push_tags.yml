@@ -2,13 +2,12 @@
 #
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 #
-name: Building and Deploying to Directory
+name: Building Test
 
 on:
-  # Runs on pushes targeting the default branch
+  pull_request:
+    branches: main
   push:
-    branches:
-      - release
     tags: 
       - v1.*
       - '!**-alpha'
@@ -26,7 +25,8 @@ concurrency:
 jobs:
   # Build job
   build:
-    name: builds to release
+    name: builds to main
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
