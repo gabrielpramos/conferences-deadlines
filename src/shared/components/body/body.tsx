@@ -1,10 +1,8 @@
-import { ConferenceInfo, ConferenceList } from '@/app/models/spreadsheet-model';
-import Link from 'next/link';
+import { ConferenceList } from '@/app/models/spreadsheet-model';
 import PublicGoogleSheetsParser from 'public-google-sheets-parser';
 import './body.scss';
-import ConferenceLocation from './conference-location/conference-location';
-import CountdownDetails from './countdown-details/countdown-details';
 import { compareConferenceDates } from '@/shared/utils/date-utils';
+import Conferences from './conference-list/conference-list';
 
 const Body = async () => {
   const fileId = process.env.SHEET_ID as string;
@@ -55,44 +53,13 @@ const Body = async () => {
     );
 
   return (
-    <section className='conference-list'>
-      {conferences?.map((conference, index) => (
-        <article
-          className='card'
-          key={`conference-${index}`}
-          style={{ marginBottom: '10px' }}
-        >
-          <div className='card-detail'>
-            <Link
-              href={conference.WebSite ?? '/'}
-              target='_blank'
-              title={conference.WebSite ?? 'No webpage listed'}
-            >
-              <h2>{conference.Conference}</h2>
-            </Link>
+    <div className='page-body'>
+      <aside>Filters</aside>
 
-            <h4 className='description'>{conference.ConferenceDetail}</h4>
-
-            <p className='category-conference-area'>
-              {conference.GreatArea} - {conference.Area}
-            </p>
-          </div>
-
-          <aside className='date-and-place-details'>
-            <p>{conference.ConferenceDates}</p>
-
-            <p>
-              <ConferenceLocation location={conference.Location} />
-            </p>
-          </aside>
-
-          <CountdownDetails
-            detail={conference.Detail}
-            deadlineISO={conference.DeadlineISO}
-          />
-        </article>
-      ))}
-    </section>
+      <section className='conference-list'>
+        <Conferences conferences={conferences} />
+      </section>
+    </div>
   );
 };
 
