@@ -1,20 +1,15 @@
-import { ConferencesList } from '@/app/models/spreadsheet-model';
-import PublicGoogleSheetsParser from 'public-google-sheets-parser';
 import './body.scss';
-import { compareConferenceDates } from '@/shared/utils/date-utils';
 import Conferences from './conference-list/conference-list';
 import PageFilters from './page-filters/page-filters';
-import { FiltersGroup } from '@/app/models/filter-model';
-import { getConferencesList, getFiltersGroup } from './conferences-utils';
+import { FC } from 'react';
+import { HomePageProps } from '../../../../pages';
 
-const Body = async () => {
-  const conferences: ConferencesList = await getConferencesList();
+type BodyProps = HomePageProps;
 
-  const filtersGroup: FiltersGroup = getFiltersGroup(conferences);
-
+const Body: FC<BodyProps> = ({ conferences, filters }) => {
   return (
     <div className='page-body'>
-      <PageFilters filtersGroup={filtersGroup} />
+      <PageFilters filtersGroup={filters.filterTypes} filters={filters} />
 
       <section className='conference-list'>
         <Conferences conferences={conferences} />

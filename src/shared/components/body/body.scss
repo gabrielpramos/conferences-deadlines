@@ -1,17 +1,96 @@
 .page-body {
   display: flex;
-  max-height: 90vh;
+  height: 90vh;
   overflow: scroll;
   padding: 24px 12px;
+  width: 100%;
 
   .filters {
     background-color: #fff;
+    height: max-content;
     margin-right: 24px;
-    min-width: 300px;
+    min-width: 340px;
     padding: 24px;
+
+    h3 {
+      color: #f8741b;
+    }
+
+    .filters-section {
+      padding: 16px 0px;
+
+      input[type='search'] {
+        height: 36px;
+        margin-bottom: 16px;
+        padding: 8px;
+        width: 100%;
+      }
+
+      details {
+        cursor: pointer;
+      }
+
+      details,
+      .filter-element {
+        color: var(--gray-bold);
+        border-bottom: 1px solid #eaeaea;
+        font-weight: 500;
+
+        input[type='checkbox'] {
+          width: 20px;
+          height: 20px;
+        }
+
+        &:hover {
+          color: #000;
+        }
+      }
+
+      summary {
+        padding: 8px 0px;
+      }
+
+      label {
+        cursor: pointer;
+        float: left;
+        margin-right: 4px;
+      }
+
+      input[type='checkbox'] {
+        float: right;
+      }
+
+      .areas-filters-group {
+        display: flex;
+        flex-flow: column;
+
+        .filter-element {
+          padding: 8px 0px;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          span {
+            float: left;
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  .no-conferences-found {
+    h3 {
+      width: 100%;
+      align-self: center;
+      text-align: center;
+    }
   }
 
   .conference-list {
+    width: 100%;
+
     .card {
       background: #fff;
       display: flex;
@@ -27,6 +106,10 @@
         display: flex;
         width: 50%;
         flex-flow: column;
+
+        h2 {
+          color: #f8741b;
+        }
 
         .description {
           padding: 8px 0px;
@@ -62,7 +145,7 @@
             &:last-child {
               margin-left: 4px;
               color: var(--gray-bold);
-              vertical-align: middle;
+              vertical-align: text-bottom;
             }
           }
         }
