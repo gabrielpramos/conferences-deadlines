@@ -1,7 +1,9 @@
-import { FiltersGroup } from '@/app/models/filter-model';
+import { FilterCategories, FiltersGroup } from '@/app/models/filter-model';
 import { ConferencesList } from '@/app/models/spreadsheet-model';
+import { SEARCH_SEPARATOR_CHARACTER } from '@/shared/constants/strings';
 import { compareConferenceDates } from '@/shared/utils/date-utils';
 import PublicGoogleSheetsParser from 'public-google-sheets-parser';
+import { ParsedUrlQuery } from 'querystring';
 
 export const getConferencesList = () => {
   const fileId = process.env.SHEET_ID as string;
@@ -49,25 +51,57 @@ export const getConferencesList = () => {
     );
 };
 
-export const getFiltersGroup = (conferences: ConferencesList) => {
+export const treatAndFilterData = (
+  query: ParsedUrlQuery,
+  conferences: ConferencesList
+) => {
   const FILTER_STARTING_VALUE = 1;
   const FILTER_INCREMENT_VALUE = 1;
+  const EMPTY_QUERY_VALUE = '';
 
-  return conferences.reduce((acc, { GreatArea, Area }) => {
-    if (!acc[GreatArea]) {
-      acc[GreatArea] = {};
-    }
+  const appliedGreatAreas = (
+    (query[FilterCategories.GreatArea] as string) || EMPTY_QUERY_VALUE
+  ).split(SEARCH_SEPARATOR_CHARACTER);
 
-    if (!acc[GreatArea][Area]) {
-      acc[GreatArea][Area] = FILTER_STARTING_VALUE;
-    }
+  const appliedAreas = (
+    (query[FilterCategories.Area] as string) ?? EMPTY_QUERY_VALUE
+  ).split(SEARCH_SEPARATOR_CHARACTER);
 
-    return {
-      ...acc,
-      [GreatArea]: {
-        ...acc[GreatArea],
-        [Area]: acc[GreatArea][Area] + FILTER_INCREMENT_VALUE,
-      },
-    };
+  const validateCheckboxesFilters = (greatArea: string, area: string) =>
+    (appliedGreatAreas.length > 0 && appliedAreas.length > 0) ||
+    appliedGreatAreas.some((greatAreaName) => greatAreaName === greatArea) ||
+    appliedAreas.some((areaName) => areaName === area);
+
+  const validateSearchFilter = (conferenceName: string) => {
+    const searchQuery = query?.[FilterCategories.Search];
+
+    return (
+      !Boolean(searchQuery) ||
+      conferenceName
+        .toLowerCase()
+        .includes((searchQuery as string).toLowerCase())
+    );
+  };
+
+  const treatedConferences = conferences
+    .filter(({ GreatArea, Area }) => validateCheckboxesFilters(GreatArea, Area))
+    .filter(({ Conference }) => validateSearchFilter(Conference));
+
+  const filterTypes = conferences.reduce((acc, { GreatArea, Area }) => {
+    acc[GreatArea] ??= {};
+    acc[GreatArea][Area] ??= FILTER_STARTING_VALUE;
+    acc[GreatArea][Area] += FILTER_INCREMENT_VALUE;
+
+    return acc;
   }, {} as FiltersGroup);
+
+  return {
+    treatedConferences,
+    filters: {
+      appliedGreatAreas,
+      appliedAreas,
+      filterTypes,
+      search: (query[FilterCategories.Search] ?? EMPTY_QUERY_VALUE) as string,
+    },
+  };
 };
