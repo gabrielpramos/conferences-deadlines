@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { ConferenceList } from '@/app/models/spreadsheet-model';
+import { ConferencesList } from '@/app/models/spreadsheet-model';
 import { FC } from 'react';
 import ConferenceLocation from '../conference-location/conference-location';
 import CountdownDetails from '../countdown-details/countdown-details';
 
-interface ConferenceListProps {
-  conferences: ConferenceList;
+interface ConferencesListProps {
+  conferences: ConferencesList;
 }
 
-const Conferences: FC<ConferenceListProps> = ({ conferences }) =>
+const Conferences: FC<ConferencesListProps> = ({ conferences }) =>
   conferences?.map((conference, index) => (
     <article
       className='card'
@@ -32,7 +32,11 @@ const Conferences: FC<ConferenceListProps> = ({ conferences }) =>
       </div>
 
       <aside className='date-and-place-details'>
-        <p>{conference.ConferenceDates}</p>
+        <p>
+          <time dateTime={conference.ConferenceDates}>
+            {conference.ConferenceDates}
+          </time>
+        </p>
 
         <p>
           <ConferenceLocation location={conference.Location} />

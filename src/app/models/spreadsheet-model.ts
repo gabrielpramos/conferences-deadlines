@@ -18,4 +18,4 @@ export interface ConferenceInfo {
   UpdatedAt: string;
 }
 
-export type ConferenceList = ConferenceInfo[];
+export type ConferencesList = ConferenceInfo[];
