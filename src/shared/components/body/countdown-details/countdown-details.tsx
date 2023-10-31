@@ -3,6 +3,7 @@ import { FC } from 'react';
 import Countdown from './countdown/countdown';
 import DeadlineDetail from './deadline-detail/deadline-detail';
 import { intervalToDuration } from 'date-fns';
+import texts from '@/shared/constants/texts';
 
 type CountdownDetailsProps = {
   [keys in Uncapitalize<
@@ -21,9 +22,7 @@ const CountdownDetails: FC<CountdownDetailsProps> = ({
   return (
     <aside className='countdown-details'>
       {submissionDeadlineOverdue ? (
-        <p className='overdue-conference'>
-          The submission deadline has passed or has not been shared.
-        </p>
+        <p className='overdue-conference'>{texts.body.overdueSubmissionText}</p>
       ) : (
         <Countdown endDate={endDate} />
       )}

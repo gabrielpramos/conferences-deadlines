@@ -11,6 +11,11 @@ const texts = {
       youtubeTitle: "CESAR School's Youtube Page",
     },
   },
+  body: {
+    filterTitle: 'Filter by:',
+    overdueSubmissionText:
+      'The submission deadline has passed or has not been shared.',
+  },
 };
 
 export const GLOBAL_OBJECT_TO_STRING_SERVER = '[object Object]';

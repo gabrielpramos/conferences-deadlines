@@ -9,10 +9,11 @@ interface CountdownProps {
 }
 
 const Countdown: FC<CountdownProps> = ({ endDate }) => {
+  const endInterval = new Date(endDate);
   const [counter, setCounter] = useState(endDate);
   const interval = intervalToDuration({
     start: new Date(),
-    end: new Date(endDate),
+    end: endInterval,
   });
 
   const treatedInterval = Object.entries(interval).reduce(
@@ -35,8 +36,10 @@ const Countdown: FC<CountdownProps> = ({ endDate }) => {
   }, [counter]);
 
   return (
-    <p className='countdown-text' suppressHydrationWarning>
-      {treatedInterval}
+    <p className='countdown-text'>
+      <time dateTime={endInterval.toISOString()} suppressHydrationWarning>
+        {treatedInterval}
+      </time>
     </p>
   );
 };

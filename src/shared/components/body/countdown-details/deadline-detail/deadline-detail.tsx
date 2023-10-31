@@ -52,7 +52,11 @@ const DeadlineDetail: FC<DeadlineDetailProps> = ({
     }
   };
 
-  return <p className={`detail ${criticityCheck(years, months)}`}>{detail}</p>;
+  return (
+    <p className={`detail ${criticityCheck(years, months)}`}>
+      <time dateTime={detail}>{detail}</time>
+    </p>
+  );
 };
 
 export default DeadlineDetail;
