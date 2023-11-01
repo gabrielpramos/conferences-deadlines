@@ -46,7 +46,7 @@ const PageFilters: FC<PageFiltersProps> = ({
       }
     }
 
-    router.replace({
+    router.push({
       pathname: router.pathname,
       query: {
         ...restQuery,
@@ -67,7 +67,7 @@ const PageFilters: FC<PageFiltersProps> = ({
             <summary>
               <input
                 type='checkbox'
-                id='greatArea'
+                id={filterGroup}
                 onChange={({ target: { checked } }) => {
                   onChangeFilter(
                     FilterCategories.GreatArea,
@@ -80,7 +80,7 @@ const PageFilters: FC<PageFiltersProps> = ({
                 )}
               />
 
-              <span>{filterGroup}</span>
+              <label htmlFor={filterGroup}>{filterGroup}</label>
             </summary>
 
             <div className='areas-filters-group'>

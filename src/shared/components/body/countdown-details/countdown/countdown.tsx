@@ -1,46 +1,67 @@
 'use client';
 
-import { GLOBAL_OBJECT_TO_STRING_SERVER } from '@/shared/constants/texts';
-import { intervalToDuration } from 'date-fns';
-import { FC, useEffect, useState } from 'react';
+import { Duration, intervalToDuration } from 'date-fns';
+import { FC } from 'react';
+import { DisplayOptionType, displayOptions } from './constants';
+import { CountdownDisplayOptions } from '@/app/models/countdown-model';
+import CountdownClock from './countdown-clock/countdown-clock';
 
 interface CountdownProps {
   endDate: number;
 }
 
+const PASSED_INTERVAL = 0;
+const NEAR_INTERVAL = 1;
+const WEEK_INTERVAL = 7;
+const CRITICAL_DAYS_INTERVAL = 2;
+
 const Countdown: FC<CountdownProps> = ({ endDate }) => {
   const endInterval = new Date(endDate);
-  const [counter, setCounter] = useState(endDate);
   const interval = intervalToDuration({
     start: new Date(),
     end: endInterval,
-  });
+  }) as Required<Duration>;
+  const displayDefinitions = { definitions: {} };
+  const noYears = interval.years === PASSED_INTERVAL;
+  const noMonths = interval.months === PASSED_INTERVAL;
 
-  const treatedInterval = Object.entries(interval).reduce(
-    (acc, [key, value]) => {
-      const result = value > 0 ? `${value} ${key}` : `${acc ? `1 ${key}` : ''}`;
+  if (interval.years > PASSED_INTERVAL) {
+    displayDefinitions.definitions =
+      displayOptions[CountdownDisplayOptions.LongRange];
+  } else if (noYears && interval.months > NEAR_INTERVAL) {
+    displayDefinitions.definitions =
+      displayOptions[CountdownDisplayOptions.MediumRange];
+  } else if (noYears && interval.months <= NEAR_INTERVAL) {
+    displayDefinitions.definitions =
+      displayOptions[CountdownDisplayOptions.MediumShortRange];
+  } else if (noYears && noMonths && interval.days <= WEEK_INTERVAL) {
+    displayDefinitions.definitions =
+      displayOptions[CountdownDisplayOptions.ShortRange];
+  } else if (noYears && noMonths && interval.days <= CRITICAL_DAYS_INTERVAL) {
+    displayDefinitions.definitions =
+      displayOptions[CountdownDisplayOptions.CriticalRange];
+  }
 
-      return `${acc ? `${acc}, ` : ''}${result}`;
-    },
-    ''
-  );
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (counter > 0) {
-        setCounter(counter - 1000);
-      }
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [counter]);
+  const treatedInterval = Object.entries(interval)
+    .filter(
+      ([key, value]) =>
+        (displayDefinitions.definitions as DisplayOptionType).displayKeys.some(
+          (displayKey) => displayKey === key
+        ) && value > 0
+    )
+    .map(([key, value]) => `${value} ${key}`)
+    .join(', ');
 
   return (
-    <p className='countdown-text'>
-      <time dateTime={endInterval.toISOString()} suppressHydrationWarning>
-        {treatedInterval}
-      </time>
-    </p>
+    <>
+      {(displayDefinitions.definitions as DisplayOptionType).countdown ? (
+        <CountdownClock endDate={endDate} treatedInterval={treatedInterval} />
+      ) : (
+        <p className='countdown-text' suppressHydrationWarning>
+          {treatedInterval}
+        </p>
+      )}
+    </>
   );
 };
 

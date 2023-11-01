@@ -24,7 +24,7 @@ const SearchFilter: FC<SearchFilterProps> = ({ value: defaultValue }) => {
       query[FilterCategories.Search] ??= value;
     }
 
-    router.replace({
+    router.push({
       pathname: router.pathname,
       query,
     });
