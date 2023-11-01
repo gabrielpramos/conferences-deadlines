@@ -1,9 +1,8 @@
 import { ConferenceInfo } from '@/app/models/spreadsheet-model';
 import { FC } from 'react';
-import Countdown from './countdown/countdown';
 import DeadlineDetail from './deadline-detail/deadline-detail';
-import { intervalToDuration } from 'date-fns';
 import texts from '@/shared/constants/texts';
+import Countdown from './countdown/countdown';
 
 type CountdownDetailsProps = {
   [keys in Uncapitalize<

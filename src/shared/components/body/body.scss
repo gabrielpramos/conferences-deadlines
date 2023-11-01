@@ -1,19 +1,20 @@
 .page-body {
   display: flex;
   height: 90vh;
-  overflow: scroll;
+  overflow-y: auto;
   padding: 24px 12px;
   width: 100%;
 
   .filters {
     background-color: #fff;
-    height: max-content;
+    max-height: 80vh;
+    overflow-y: auto;
     margin-right: 24px;
     min-width: 340px;
     padding: 24px;
 
     h3 {
-      color: #f8741b;
+      color: var(--primary-orange);
     }
 
     .filters-section {
@@ -32,7 +33,7 @@
 
       details,
       .filter-element {
-        color: var(--gray-bold);
+        color: #000;
         border-bottom: 1px solid #eaeaea;
         font-weight: 500;
 
@@ -42,7 +43,7 @@
         }
 
         &:hover {
-          color: #000;
+          color: var(--primary-orange);
         }
       }
 
@@ -52,7 +53,6 @@
 
       label {
         cursor: pointer;
-        float: left;
         margin-right: 4px;
       }
 
@@ -89,6 +89,8 @@
   }
 
   .conference-list {
+    padding-bottom: 24px;
+    height: max-content;
     width: 100%;
 
     .card {
@@ -108,7 +110,7 @@
         flex-flow: column;
 
         h2 {
-          color: #f8741b;
+          color: var(--primary-orange);
         }
 
         .description {
@@ -157,7 +159,7 @@
     }
 
     .countdown-details {
-      align-self: end;
+      align-self: center;
       padding: 0px 12px;
       min-height: 68px;
 

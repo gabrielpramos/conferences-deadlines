@@ -12,6 +12,7 @@ import { ConferencesList } from '@/app/models/spreadsheet-model';
 import { FC, Suspense } from 'react';
 import Head from '@/shared/components/head/head';
 import { ServerFilterObject } from '@/app/models/filter-model';
+import { getConferencesRequest } from './api/conferences';
 
 export interface HomePageProps {
   conferences: ConferencesList;
@@ -34,7 +35,8 @@ const HomePage: FC<HomePageProps> = ({ conferences, filters }) => (
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const { query } = context;
-  const conferences: ConferencesList = await getConferencesList();
+
+  const conferences: ConferencesList = await getConferencesRequest();
 
   const { treatedConferences, filters } = treatAndFilterData(
     query,

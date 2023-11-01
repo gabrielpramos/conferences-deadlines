@@ -1,0 +1,8 @@
+# Block all crawlers for / everything else but the main page with or without search params
+User-agent: *
+Disallow: /*/
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+Allow: /*?*

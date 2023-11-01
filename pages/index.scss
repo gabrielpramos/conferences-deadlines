@@ -36,6 +36,8 @@
 
   --gray-bold: #718096;
 
+  --primary-orange: #f8741b;
+
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
@@ -55,6 +57,7 @@ body {
 }
 
 body {
+  scrollbar-width: thin;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
