@@ -1,53 +1,51 @@
+'use client';
 import './index.scss';
 
 import Header from '@/shared/components/header/header';
 import Footer from '@/shared/components/footer/footer';
 import Body from '@/shared/components/body/body';
 import { GetServerSidePropsContext } from 'next/types';
-import {
-  getConferencesList,
-  treatAndFilterData,
-} from '@/shared/components/body/conferences-utils';
-import { ConferencesList } from '@/app/models/spreadsheet-model';
-import { FC, Suspense } from 'react';
+import { FC, Suspense, createContext, useContext } from 'react';
 import Head from '@/shared/components/head/head';
-import { ServerFilterObject } from '@/app/models/filter-model';
-import { getConferencesRequest } from './api/conferences';
 
 export interface HomePageProps {
-  conferences: ConferencesList;
-  filters: ServerFilterObject;
+  sheetUrl: string;
+  sheetUrlAreas: string;
 }
+const AppContext = createContext<HomePageProps | undefined>(undefined);
 
-const HomePage: FC<HomePageProps> = ({ conferences, filters }) => (
-  <Suspense fallback={<h1>loading</h1>}>
-    <Head />
+export const useAppContext = () => {
+  const context = useContext(AppContext);
 
-    <main className='main'>
-      <Header />
+  if (!context) {
+    throw Error('The component must be under HomePage to use this context');
+  }
 
-      <Body conferences={conferences} filters={filters} />
+  return context;
+};
 
-      <Footer />
-    </main>
-  </Suspense>
+const HomePage: FC<HomePageProps> = ({ sheetUrl, sheetUrlAreas }) => (
+  <AppContext.Provider value={{ sheetUrl, sheetUrlAreas }}>
+    <Suspense fallback={<h1>loading</h1>}>
+      <Head />
+
+      <main className='main'>
+        <Header />
+
+        <Body />
+
+        <Footer />
+      </main>
+    </Suspense>
+  </AppContext.Provider>
 );
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { query } = context;
-
-  const conferences: ConferencesList = await getConferencesRequest();
-
-  const { treatedConferences, filters } = treatAndFilterData(
-    query,
-    conferences
-  );
+export async function getServerSideProps() {
+  const sheetUrl = process.env.SHEET_URL as string;
+  const sheetUrlAreas = process.env.SHEET_URL_AREAS as string;
 
   return {
-    props: {
-      conferences: treatedConferences,
-      filters: filters as ServerFilterObject,
-    },
+    props: { sheetUrl, sheetUrlAreas },
   };
 }
 

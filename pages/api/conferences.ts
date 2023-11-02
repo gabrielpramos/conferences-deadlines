@@ -1,29 +1,16 @@
-import { ConferencesList } from '@/app/models/spreadsheet-model';
 import Conferences from '@/classes/conferences';
 import { getConferencesList } from '@/shared/components/body/conferences-utils';
-import { addHours } from 'date-fns';
-import isAfter from 'date-fns/isAfter';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 type ResponseData = { data: string };
 
 export const getConferencesRequest = async () => {
   const conferencesInstance = Conferences.getInstance();
+  const conferencesList = await getConferencesList();
 
-  if (
-    !conferencesInstance.getLastUpdate() ||
-    isAfter(
-      Number(conferencesInstance.getLastUpdate()),
-      addHours(Date.now(), Conferences.update_amount_hours)
-    )
-  ) {
-    const conferencesList = await getConferencesList();
-    conferencesInstance.setConferences(conferencesList);
+  conferencesInstance.setConferences(conferencesList);
 
-    return conferencesList;
-  }
-
-  return conferencesInstance.getConferences();
+  return conferencesList;
 };
 
 const handler = async (
@@ -31,7 +18,9 @@ const handler = async (
   res: NextApiResponse<ResponseData>
 ) => {
   if (req.method === 'GET') {
-    res.status(200).json({ data: JSON.stringify(getConferencesRequest()) });
+    const responseData = await getConferencesRequest();
+
+    res.status(200).json({ data: JSON.stringify(responseData) });
   }
 };
 

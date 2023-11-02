@@ -13,7 +13,8 @@
     min-width: 340px;
     padding: 24px;
 
-    h3 {
+    h3,
+    .category-filter-section-title {
       color: var(--primary-orange);
     }
 
@@ -49,6 +50,10 @@
 
       summary {
         padding: 8px 0px;
+
+        span {
+          margin-right: 4px;
+        }
       }
 
       label {

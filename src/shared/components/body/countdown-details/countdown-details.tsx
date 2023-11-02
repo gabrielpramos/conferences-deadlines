@@ -3,6 +3,7 @@ import { FC } from 'react';
 import DeadlineDetail from './deadline-detail/deadline-detail';
 import texts from '@/shared/constants/texts';
 import Countdown from './countdown/countdown';
+import { isValid } from 'date-fns';
 
 type CountdownDetailsProps = {
   [keys in Uncapitalize<
@@ -14,9 +15,9 @@ const CountdownDetails: FC<CountdownDetailsProps> = ({
   deadlineISO,
   detail,
 }) => {
+  const endDate = new Date(deadlineISO);
   const submissionDeadlineOverdue =
-    !deadlineISO || Date.now() > Number(deadlineISO);
-  const endDate = Number(deadlineISO);
+    !isValid(endDate) || Date.now() > endDate.getTime();
 
   return (
     <aside className='countdown-details'>
