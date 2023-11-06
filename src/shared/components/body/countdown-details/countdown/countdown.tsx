@@ -7,7 +7,7 @@ import { CountdownDisplayOptions } from '@/app/models/countdown-model';
 import CountdownClock from './countdown-clock/countdown-clock';
 
 interface CountdownProps {
-  endDate: number;
+  endDate: Date;
 }
 
 const PASSED_INTERVAL = 0;
@@ -15,8 +15,7 @@ const NEAR_INTERVAL = 1;
 const WEEK_INTERVAL = 7;
 const CRITICAL_DAYS_INTERVAL = 2;
 
-const Countdown: FC<CountdownProps> = ({ endDate }) => {
-  const endInterval = new Date(endDate);
+const Countdown: FC<CountdownProps> = ({ endDate: endInterval }) => {
   const interval = intervalToDuration({
     start: new Date(),
     end: endInterval,
@@ -55,7 +54,10 @@ const Countdown: FC<CountdownProps> = ({ endDate }) => {
   return (
     <>
       {(displayDefinitions.definitions as DisplayOptionType).countdown ? (
-        <CountdownClock endDate={endDate} treatedInterval={treatedInterval} />
+        <CountdownClock
+          endDate={endInterval.getTime()}
+          treatedInterval={treatedInterval}
+        />
       ) : (
         <p className='countdown-text' suppressHydrationWarning>
           {treatedInterval}

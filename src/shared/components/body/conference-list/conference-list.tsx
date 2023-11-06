@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { ConferencesList } from '@/app/models/spreadsheet-model';
 import { FC } from 'react';

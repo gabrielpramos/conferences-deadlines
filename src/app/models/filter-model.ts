@@ -1,5 +1,9 @@
-export type FiltersGroup = {
+export type FiltersGroup = { total: number } & {
   [x: string]: { [y: string]: number };
+};
+
+export type FiltersAreas = {
+  [x: string]: string[];
 };
 
 export enum FilterCategories {
@@ -12,8 +16,6 @@ export type FilterType = {
 };
 
 export type ServerFilterObject = {
-  appliedGreatAreas: string[];
-  appliedAreas: string[];
-  filterTypes: FiltersGroup;
-  search: string;
+  filterAreasList: FiltersAreas;
+  filterCounts: FiltersGroup;
 };

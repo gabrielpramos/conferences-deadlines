@@ -13,6 +13,8 @@ const texts = {
   },
   body: {
     filterTitle: 'Filter by:',
+    filterConferenceName: 'Name:',
+    filterCategories: 'Conferences Areas:',
     filterSearchPlaceholder: 'Search for the conference name',
     overdueSubmissionText:
       'The submission deadline has passed or has not been shared.',

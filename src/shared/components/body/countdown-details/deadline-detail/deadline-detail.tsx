@@ -3,7 +3,7 @@ import { FC } from 'react';
 
 interface DeadlineDetailProps {
   detail: string;
-  endDate: number;
+  endDate: Date;
   submissionDeadlineOverdue: boolean;
 }
 
@@ -32,7 +32,7 @@ const DeadlineDetail: FC<DeadlineDetailProps> = ({
 
   const { years, months } = intervalToDuration({
     start: new Date(),
-    end: new Date(endDate),
+    end: endDate,
   });
 
   const criticityCheck = (years: number = 0, months: number = 0) => {

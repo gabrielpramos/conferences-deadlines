@@ -1,15 +1,17 @@
 export const compareConferenceDates = (
-  firstElement: number,
-  secondElement: number
+  firstElement: Date,
+  secondElement: Date
 ) => {
-  const firstDateOverdue = new Date().getTime() > firstElement;
-  const secondDateOverdue = new Date().getTime() > secondElement;
+  const firstElementTime = firstElement.getTime();
+  const secondElementTime = secondElement.getTime();
+  const firstDateOverdue = new Date().getTime() > firstElementTime;
+  const secondDateOverdue = new Date().getTime() > secondElementTime;
 
   if ((firstDateOverdue && !secondDateOverdue) || !firstElement) {
     return 1;
   } else if ((!firstDateOverdue && secondDateOverdue) || !secondElement) {
     return -1;
   } else {
-    return firstElement - secondElement;
+    return firstElementTime - secondElementTime;
   }
 };
