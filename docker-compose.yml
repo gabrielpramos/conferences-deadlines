@@ -1,0 +1,10 @@
+services:
+  conference-deadlines:
+    image: conference-deadlines
+    ports:
+        - 3000:3000
+    build:
+        context: .
+        dockerfile: Dockerfile
+    volumes:
+        - /app/node_modules
