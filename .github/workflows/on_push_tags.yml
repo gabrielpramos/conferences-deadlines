@@ -95,17 +95,15 @@ jobs:
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
-          ID_RSA: ${{ secrets.ID_RSA }}
         run: |
-          ssh -i $ID_RSA $SERVER_USER@$SERVER_IP
+          ssh $SERVER_USER@$SERVER_IP
           "cd ~/conferences-deadlines && git fetch --tags && git checkout tags/$GIT_TAG_NAME -b $GIT_TAG_NAME"
       - name: Updates docker
         env:
           SERVER_USER: ${{ secrets.SERVER_USER }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
-          ID_RSA: ${{ secrets.ID_RSA }}
         run: |
-          ssh -i $ID_RSA $SERVER_USER@$SERVER_IP
+          ssh $SERVER_USER@$SERVER_IP
           "cd ~/conferences-deadlines && docker compose up --build -d"
           echo ">>> Call For Papers <<< successfully deployed!!"
 
