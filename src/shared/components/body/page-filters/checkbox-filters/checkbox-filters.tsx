@@ -2,10 +2,11 @@
 
 import {
   FilterCategories,
+  FilterType,
   ServerFilterObject,
 } from '@/app/models/filter-model';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { URLSearchParamIndividual } from '../../conferences-utils';
 import { SEARCH_SEPARATOR_CHARACTER } from '@/shared/constants/strings';
 
@@ -29,7 +30,6 @@ const CheckboxFilters: FC<CheckboxFiltersProps> = ({
   filters: { filterAreasList, filterCounts },
 }) => {
   const router = useRouter();
-
   const {
     [FilterCategories.GreatArea]: selectedGreatAreas = '',
     [FilterCategories.Area]: selectedAreas = '',
@@ -46,117 +46,63 @@ const CheckboxFilters: FC<CheckboxFiltersProps> = ({
       .split(SEARCH_SEPARATOR_CHARACTER)
       .some((areaNameURL: string) => areaNameURL === areaName);
 
-  const initialState = Object.entries(filterAreasList).map(([key, value]) => ({
-    name: key,
-    checked: isSelectedGreatArea(key),
-    areas: value.map((name) => ({
-      name,
-      checked: isSelectedArea(name),
-    })),
-  }));
-
-  const getFiltersStates = () =>
-    Object.entries(filterAreasList).map(([key, value]) => ({
+  const greatAreasList = Object.entries(filterAreasList).map(
+    ([key, value]) => ({
       name: key,
       checked: isSelectedGreatArea(key),
       areas: value.map((name) => ({
         name,
         checked: isSelectedArea(name),
       })),
-    }));
+    })
+  );
 
-  const [filtersState, setFiltersState] = useState<FiltersState>(initialState);
-
-  const mapFilters = (
-    filters: Filter[] | FiltersState,
-    name: string,
+  const onChangeFilter = (
+    filterKey: FilterCategories,
+    filterValue: string,
     checked: boolean
-  ) =>
-    filters.map((filter) => {
-      if (filter.name === name) {
-        return { ...filter, checked };
+  ) => {
+    const { [filterKey]: previousSelcectedFilters, ...restQuery } =
+      router.query;
+    const query: FilterType = {};
+
+    if (checked) {
+      query[filterKey] = `${previousSelcectedFilters ?? ''}${filterValue};`;
+    } else {
+      const filterSet = String(previousSelcectedFilters ?? '')
+        .split(SEARCH_SEPARATOR_CHARACTER)
+        .filter((previousFilter) => previousFilter !== filterValue)
+        .join(SEARCH_SEPARATOR_CHARACTER);
+
+      if (filterSet.length > 0) {
+        query[filterKey] = filterSet;
       }
-
-      return filter;
-    });
-
-  const onChangeGreatAreaFilter = ({ name, checked }: Filter) => {
-    const updateFilters = {} as URLSearchParamIndividual;
-    const newSelectedGreatArea = `${name}${SEARCH_SEPARATOR_CHARACTER}`;
-    const removedFilter = selectedGreatAreas.replace(
-      `${newSelectedGreatArea}`,
-      ''
-    );
-
-    if (!checked && removedFilter.length > 0) {
-      updateFilters[FilterCategories.GreatArea] = removedFilter;
-    } else {
-      updateFilters[
-        FilterCategories.GreatArea
-      ] = `${selectedGreatAreas}${newSelectedGreatArea}`;
     }
 
-    setFiltersState(mapFilters(filtersState, name, checked) as FiltersState);
-
-    router.push(router.pathname, {
+    router.push({
+      pathname: router.pathname,
       query: {
-        [FilterCategories.Area]: selectedAreas,
-        ...restSearchParams,
-      },
-    });
-  };
-
-  const onChangeAreaFilter = ({
-    name,
-    checked,
-    filterParent,
-  }: Filter & { filterParent: string }) => {
-    const updateFilters = {} as URLSearchParamIndividual;
-    const newSelectedArea = `${name}${SEARCH_SEPARATOR_CHARACTER}`;
-    const removedFilter = selectedAreas.replace(`${newSelectedArea}`, '');
-
-    if (!checked && removedFilter.length > 0) {
-      updateFilters[FilterCategories.Area] = removedFilter;
-    } else {
-      updateFilters[
-        FilterCategories.Area
-      ] = `${selectedGreatAreas}${newSelectedArea}`;
-    }
-
-    setFiltersState(
-      filtersState.map((filterElement) => {
-        if (filterElement.name === filterParent) {
-          return {
-            ...filterElement,
-            areas: mapFilters(filterElement.areas, name, checked),
-          };
-        }
-        return filterElement;
-      })
-    );
-
-    router.push(router.pathname, {
-      query: {
-        [FilterCategories.GreatArea]: selectedGreatAreas,
-        ...restSearchParams,
+        ...restQuery,
+        ...query,
       },
     });
   };
 
   return (
     <>
-      {filtersState.map(({ name: greatAreaName, areas, checked }) => (
+      {greatAreasList.map(({ name: greatAreaName, areas, checked }) => (
         <details key={greatAreaName} open>
           <summary>
             <input
               type='checkbox'
               id={greatAreaName}
-              checked={checked}
+              defaultChecked={checked}
               onChange={({ target: { checked } }) => {
-                onChangeGreatAreaFilter({
-                  name: greatAreaName,
-                  checked,
-                } as Filter);
+                onChangeFilter(
+                  FilterCategories.GreatArea,
+                  greatAreaName,
+                  checked
+                );
               }}
             />
             <span>({filterCounts[greatAreaName]?.total ?? 0})</span>
@@ -179,13 +125,9 @@ const CheckboxFilters: FC<CheckboxFiltersProps> = ({
                   value={areaName}
                   id={areaName}
                   onChange={({ target: { checked } }) => {
-                    onChangeAreaFilter({
-                      name: areaName,
-                      filterParent: greatAreaName,
-                      checked,
-                    } as Filter & { filterParent: string });
+                    onChangeFilter(FilterCategories.Area, areaName, checked);
                   }}
-                  checked={checked}
+                  defaultChecked={checked}
                 />
 
                 <label htmlFor={areaName}>{areaName}</label>

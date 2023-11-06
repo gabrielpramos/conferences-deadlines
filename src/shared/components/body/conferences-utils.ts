@@ -118,7 +118,8 @@ export const filterConferences = (
     SEARCH_SEPARATOR_CHARACTER
   );
   const validateCheckboxesFilters = (greatArea: string, area: string) =>
-    (appliedGreatAreas.length === 0 && appliedAreas.length === 0) ||
+    (appliedGreatAreas.every((filter) => filter === '') &&
+      appliedAreas.every((filter) => filter === '')) ||
     appliedGreatAreas.some((greatAreaName) => greatAreaName === greatArea) ||
     appliedAreas.some((areaName) => areaName === area);
 
@@ -128,7 +129,9 @@ export const filterConferences = (
       .toLowerCase()
       .includes((searchQuery as string).toLowerCase());
 
-  return conferences.filter(({ Conference }) =>
-    validateSearchFilter(Conference)
-  );
+  return conferences
+    .filter(({ Conference }) => validateSearchFilter(Conference))
+    .filter(({ GreatArea, Area }) =>
+      validateCheckboxesFilters(GreatArea, Area)
+    );
 };

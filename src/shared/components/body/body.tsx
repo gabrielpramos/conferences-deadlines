@@ -41,7 +41,7 @@ const Body: FC = () => {
     const timeToUpdate = (lastUpdate: number, updateAmount: number) =>
       isAfter(
         Date.now(),
-        addMinutes(Number(conferencesAreasData?.lastUpdate), updateAmount)
+        addMinutes(Number(lastUpdate), updateAmount)
       );
 
     if (
